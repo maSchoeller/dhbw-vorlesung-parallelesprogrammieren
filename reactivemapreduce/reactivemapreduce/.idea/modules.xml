@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/reactivemapreduce.iml" filepath="$PROJECT_DIR$/reactivemapreduce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/reactivemapreduce.main.iml" filepath="$PROJECT_DIR$/.idea/modules/reactivemapreduce.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/reactivemapreduce.reactivemapreduce.iml" filepath="$PROJECT_DIR$/.idea/modules/reactivemapreduce.reactivemapreduce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/reactivemapreduce.test.iml" filepath="$PROJECT_DIR$/.idea/modules/reactivemapreduce.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/reactivemapreduce_main.iml" filepath="$PROJECT_DIR$/.idea/modules/reactivemapreduce_main.iml" group="reactivemapreduce" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/reactivemapreduce_test.iml" filepath="$PROJECT_DIR$/.idea/modules/reactivemapreduce_test.iml" group="reactivemapreduce" />
+    </modules>
+  </component>
+</project>
