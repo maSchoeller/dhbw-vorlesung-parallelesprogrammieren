@@ -1,10 +1,7 @@
 package de.dhbw.parprog;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -45,18 +42,15 @@ public class MapReduce {
                         .getAsInt();
         });
 
-        CompletableFuture<Double, Long> test = averageAge.thenCombine(maleNames, (average, males) -> {
-            
+        CompletableFuture<CalcResult> averageAgeAndMales = averageAge.thenCombine(maleNames, (average, males) -> {
+            return new CalcResult(average, 0, males);
         });
+        CompletableFuture<CalcResult> result = averageAgeAndMales.thenCombine(maxNameLength, (ageMale, max) -> {
+            return new CalcResult(ageMale.avgAge, max, ageMale.maleCount);
+        });
+        return result;
 
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return new CalcResult((double) future1.get(), (long) future3.get(), (long) future2.get());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                return null;
-            }
-            });
+        
     }
 
     public static void main(String[] args) {
@@ -67,7 +61,7 @@ public class MapReduce {
         }
 
         allePersonen = sequence(personenCompFuture);
-        /*
+        
         List<Person> listeDerPersonen = new ArrayList<>();
         try {
             listeDerPersonen = allePersonen.get();
@@ -77,7 +71,7 @@ public class MapReduce {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        */
+        
         try {
             CalcResult finalResult = MapReduce.doAnalysis().get();
             System.out.println(finalResult.toString());
