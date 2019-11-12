@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
-
 public class JavaPipe {
     /* Hinweis: BufferedReader besitzt eine readLine-Methode.
        Von InputStream zu Buffered Reader:
