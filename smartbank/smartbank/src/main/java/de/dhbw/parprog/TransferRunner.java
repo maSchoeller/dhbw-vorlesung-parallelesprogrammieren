@@ -12,8 +12,6 @@ public class TransferRunner implements Runnable {
 
     @Override
     public void run() {
-        bank.deposit(a, 500);
-        bank.deposit(b, 500);
         System.out.println("Account A: " + bank.getBalance(a) + " \nAccount B. " + bank.getBalance(b));
         bank.transfer(a, b, 200);
         System.out.println("Account A: " + bank.getBalance(a) + " \nAccount B. " + bank.getBalance(b));
