@@ -45,12 +45,9 @@ public class MapReduce {
         CompletableFuture<CalcResult> averageAgeAndMales = averageAge.thenCombine(maleNames, (average, males) -> {
             return new CalcResult(average, 0, males);
         });
-        CompletableFuture<CalcResult> result = averageAgeAndMales.thenCombine(maxNameLength, (ageMale, max) -> {
+        return averageAgeAndMales.thenCombine(maxNameLength, (ageMale, max) -> {
             return new CalcResult(ageMale.avgAge, max, ageMale.maleCount);
         });
-        return result;
-
-        
     }
 
     public static void main(String[] args) {

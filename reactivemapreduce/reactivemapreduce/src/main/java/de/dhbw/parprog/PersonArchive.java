@@ -20,9 +20,9 @@ public class PersonArchive {
     private static int personenPtr = 0;
 
     public static Person getPerson() {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) { }
+        // try {
+        //     // Thread.sleep(1000);
+        // } catch (InterruptedException e) { }
         synchronized (personen) {
             if (personenPtr<personen.size()) {
                 Person result = personen.get(personenPtr);

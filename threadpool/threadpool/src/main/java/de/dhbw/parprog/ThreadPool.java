@@ -1,12 +1,45 @@
 package de.dhbw.parprog;
 
-import org.apache.commons.lang.NotImplementedException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 
 public class ThreadPool {
 	public int doCalculation() {
-		// TODO: Über Threadpool verteilte Berechnung hier einfügen
-		throw new NotImplementedException();
+		List<Future<Integer>> list = new ArrayList<>();
+		ExecutorService service = Executors.newFixedThreadPool(5);
+		for (int i = 0; i < 10; i++) {
+			list.add(service.submit(() -> {
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					//Nothing todo
+				}
+				return 42;
+			}));
+
+		}
+
+		try {
+			return list.stream()
+				.mapToInt(f -> 
+				{
+					try 
+					{ 
+						return f.get();
+					} catch(Exception ex) {
+						return 0;
+					}
+				})
+				.sum();
+		} finally {
+			service.shutdown();
+		}
+
 	}
 
 	public static void main(String[] args) {
