@@ -1,4 +1,10 @@
 .gradle
+**/*.class
+**/*.classpath
+**/*.dat
+**/*.project
+**/*.prefs
+
 /build/
 
 # Ignore Gradle GUI config
