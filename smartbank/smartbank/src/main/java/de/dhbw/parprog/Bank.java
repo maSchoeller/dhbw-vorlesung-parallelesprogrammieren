@@ -1,16 +1,17 @@
 package de.dhbw.parprog;
-
-import org.apache.commons.lang.NotImplementedException;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class Bank {
+    ReadWriteLock sperre = new ReentrantReadWriteLock();
+    
     /**
      * Erzeugt ein neues Konto mit initialem Kontostand 0.
      * @return das neue Konto
      */
-	public Account createAccount() {
-        // TODO: Mit eigener Implementierung füllen
-        return  new Account();
+	public synchronized Account createAccount() {
+        return new Account(0);
     }
 
     /**
@@ -20,8 +21,12 @@ public class Bank {
      * @throws IllegalArgumentException bei ungültigen Parametern
      */
 	public long getBalance(Account account) throws IllegalArgumentException {
-        // TODO: Mit eigener Implementierung füllen
-        return  account.getBalance();
+        this.sperre.readLock().lock();
+        try {
+            return account.getAmount();
+        } finally {
+            this.sperre.readLock().unlock();
+        }
     }
 
     /**
@@ -32,8 +37,29 @@ public class Bank {
      * @throws IllegalAccountStateException falls der Kontostand außerhalb des gültigen Wertebereichs geraten würde
      */
 	public void deposit(Account account, long amount) throws IllegalAccountStateException, IllegalArgumentException {
-        // TODO: Mit eigener Implementierung füllen
-        account.update(amount);
+        if (amount <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        long actAmount;
+
+        this.sperre.readLock().lock();
+        try {
+            actAmount = getBalance(account);
+        } finally {
+            this.sperre.readLock().unlock();
+        }
+
+        this.sperre.writeLock().lock();
+        try {
+            if ((actAmount + amount) <= Account.UPPER_LIMIT) {
+                account.verbuchen(amount);
+            }else{
+                throw new IllegalAccountStateException();
+            }
+        } finally {
+            this.sperre.writeLock().unlock();
+        }
     }
 
     /**
@@ -44,8 +70,29 @@ public class Bank {
      * @throws IllegalAccountStateException falls der Kontostand außerhalb des gültigen Wertebereichs geraten würde
      */
 	public void withdraw(Account account, long amount) throws IllegalAccountStateException, IllegalArgumentException {
-        // TODO: Mit eigener Implementierung füllen
-        account.update(-amount);
+        if (amount <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        long actAmount;
+
+        this.sperre.readLock().lock();
+        try {
+            actAmount = getBalance(account);
+        } finally {
+            this.sperre.readLock().unlock();
+        }
+
+        this.sperre.writeLock().lock();
+        try {
+            if ((actAmount - amount) >= Account.LOWER_LIMIT) {
+                account.abbuchen(amount);
+            }else{
+                throw new IllegalAccountStateException();
+            }
+        } finally {
+            this.sperre.writeLock().unlock();
+        }
     }
 
     /**
@@ -57,7 +104,30 @@ public class Bank {
      * @throws IllegalAccountStateException falls einer der Kontostände außerhalb des gültigen Wertebereichs geraten würde
      */
 	public void transfer(Account fromAccount, Account toAccount, long amount) throws IllegalAccountStateException, IllegalArgumentException {
-        // TODO: Mit eigener Implementierung füllen
-        
-	}
+        if (amount <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        long actFromAmount, actToAmount;
+
+        this.sperre.readLock().lock();
+        try {
+            actFromAmount = getBalance(fromAccount);
+            actToAmount = getBalance(toAccount);
+        } finally {
+            this.sperre.readLock().unlock();
+        }
+
+        this.sperre.writeLock().lock();
+        try {
+            if (((actFromAmount - amount) >= Account.LOWER_LIMIT) && ((actToAmount + amount) <= Account.UPPER_LIMIT)) {
+                fromAccount.abbuchen(amount);
+                toAccount.verbuchen(amount);
+            }else{
+                throw new IllegalAccountStateException();
+            }
+        } finally {
+            this.sperre.writeLock().unlock();
+        }
+    }
 }
