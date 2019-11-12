@@ -21,19 +21,24 @@ public class ThreadPool {
 				}
 				return 42;
 			}));
+
 		}
 
-		return list.stream()
-			.mapToInt(f -> 
-			{
-				try 
-				{ 
-					return f.get();
-				} catch(Exception ex) {
-					return 0;
-				}
-			})
-			.sum();
+		try {
+			return list.stream()
+				.mapToInt(f -> 
+				{
+					try 
+					{ 
+						return f.get();
+					} catch(Exception ex) {
+						return 0;
+					}
+				})
+				.sum();
+		} finally {
+			service.shutdown();
+		}
 
 	}
 
