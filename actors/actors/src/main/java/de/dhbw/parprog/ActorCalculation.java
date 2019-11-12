@@ -16,13 +16,13 @@ public class ActorCalculation {
         ActorSystem system = ActorSystem.create("actors");
 
         // TODO: Eigene Implementierung hier einfügen
-        throw new NotImplementedError();
 
         Future<Terminated> theEnd = system.terminate();
         try {
             Await.ready(theEnd, Duration.apply(10, TimeUnit.SECONDS));
         } catch (InterruptedException | TimeoutException e) {
         }
+        return 0;
     }
 
 	public static void main(String[] args) {
