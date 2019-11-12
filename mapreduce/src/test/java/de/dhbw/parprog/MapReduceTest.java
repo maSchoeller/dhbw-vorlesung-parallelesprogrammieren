@@ -13,8 +13,7 @@ import org.junit.runners.JUnit4;
 public class MapReduceTest {
     @Test
     public void calculationReturnsCorrectResult() {
-        MapReduce mapReduce = new MapReduce();
-        CalcResult result = mapReduce.doAnalysis().join();
+        CalcResult result = MapReduce.doAnalysis().join();
         assertThat(result.maleCount).isEqualTo(5);
         assertThat(result.maxLen).isEqualTo(12);
         assertThat(result.avgAge).isEqualTo(52.0);
