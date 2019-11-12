@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - JavaPipe",
+            "request": "launch",
+            "mainClass": "de.dhbw.parprog.JavaPipe",
+            "projectName": "racecond"
+        }
+    ]
+}
