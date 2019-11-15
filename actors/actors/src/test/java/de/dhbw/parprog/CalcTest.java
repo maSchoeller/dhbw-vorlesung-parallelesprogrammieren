@@ -41,15 +41,16 @@ public class CalcTest {
     @Test
     public void calculationReturnsCorrectResult() {
         ActorCalculation calc = new ActorCalculation();
-        assertThat(calc.doCalculation()).isEqualTo(2310);
+        assertThat(calc.doCalculation()).isEqualTo(420);
     }
 
     @Test
     public void actorReturnsCorrectResult() throws Exception {
         final Props props = CalcActor.getProps();
         final TestActorRef<CalcActor> ref = TestActorRef.create(system, props, "actorReturnsCorrectResultTest");
-        final Future<Object> future = Patterns.ask(ref, new YourMessage(1), 3000);
+        final Future<Object> future = Patterns.ask(ref, new Request(1), 3000);
         assertThat(future.isCompleted()).isTrue();
-        assertThat(Await.result(future, Duration.Zero())).isEqualTo(42);
+        Response resp = ((Response)Await.result(future, Duration.Zero()));
+        assertThat(resp.GetResult()).isEqualTo(42);
     }
 }

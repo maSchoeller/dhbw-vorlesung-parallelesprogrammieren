@@ -2,7 +2,8 @@ package de.dhbw.parprog;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import scala.NotImplementedError;
+import akka.routing.RoundRobinPool;
+
 
 
 public class CalcActor extends AbstractActor {
@@ -10,9 +11,23 @@ public class CalcActor extends AbstractActor {
         return Props.create(CalcActor.class);
     }
 
+    public CalcActor() {
+        super();
+        // getContext().actorOf(new RoundRobinPool(5).props(CalcActor.getProps()),"calculator");
+    }
+
     @Override
     public Receive createReceive() {
-        // TODO: Eigene Implementierung hier einfügen
-        throw new NotImplementedError();
+
+        return receiveBuilder()
+            .match(Request.class, r -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+
+                }
+                sender().tell(new Response(r.getNumber()*42), self());
+            })
+            .build();
     }
 }

@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ActorCalculation",
+            "request": "launch",
+            "mainClass": "de.dhbw.parprog.ActorCalculation",
+            "projectName": "actors"
+        }
+    ]
+}
