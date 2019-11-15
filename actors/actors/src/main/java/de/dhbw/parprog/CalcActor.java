@@ -2,7 +2,6 @@ package de.dhbw.parprog;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import akka.routing.RoundRobinPool;
 
 
 

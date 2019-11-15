@@ -3,7 +3,6 @@ package de.dhbw.parprog;
 import akka.actor.*;
 import akka.pattern.*;
 import akka.routing.RoundRobinPool;
-import scala.compat.java8.FutureConverters;
 import scala.concurrent.*;
 import scala.concurrent.Future;
 import scala.concurrent.duration.*;
