@@ -23,6 +23,7 @@ public class MapReduce {
                 .thenApply(v -> futures.stream().map(future -> future.join()).collect(Collectors.<T>toList()));
     }
 
+    
     public static CompletableFuture<CalcResult> doAnalysis() {
 
         CompletableFuture<Double> averageAge = allePersonen.thenApply((list) -> {
@@ -35,19 +36,17 @@ public class MapReduce {
 
         CompletableFuture<Integer> maxNameLength = allePersonen.thenApply((list) -> {
             return list.stream()
-                        .mapToInt(p -> {
-                            return p.getNachname().length();
-                        })
+                        .mapToInt(p -> p.getNachname().length())
                         .max()
                         .getAsInt();
         });
 
-        CompletableFuture<CalcResult> averageAgeAndMales = averageAge.thenCombine(maleNames, (average, males) -> {
-            return new CalcResult(average, 0, males);
+        CompletableFuture<Void> allFinished = CompletableFuture.allOf(averageAge, maleNames, maxNameLength);
+        CompletableFuture<CalcResult> result = allFinished.thenApply((v) -> {
+            return new CalcResult(averageAge.join(), maxNameLength.join(), maleNames.join());
         });
-        return averageAgeAndMales.thenCombine(maxNameLength, (ageMale, max) -> {
-            return new CalcResult(ageMale.avgAge, max, ageMale.maleCount);
-        });
+
+        return result;
     }
 
     public static void main(String[] args) {
